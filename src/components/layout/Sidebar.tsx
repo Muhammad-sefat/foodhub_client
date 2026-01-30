@@ -30,7 +30,9 @@ export default function Sidebar({
         ${open ? "translate-x-0" : "-translate-x-full"}
         md:translate-x-0`}
       >
-        <div className="p-5 text-xl font-bold text-green-600">FoodHub</div>
+        <div className="p-5 text-xl font-bold text-green-600">
+          <Link href="/">FoodHub</Link>
+        </div>
 
         <nav className="px-3 space-y-1">
           {links.map((link) => {
