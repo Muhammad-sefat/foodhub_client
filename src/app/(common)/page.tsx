@@ -1,7 +1,7 @@
-import { FeaturedMeals } from "@/components/home/FeaturedMeals";
-import { HomeCategories } from "@/components/home/HomeCategories";
-import { HomeHero } from "@/components/home/HomeHero";
-import { HowItWorks } from "@/components/home/HowItWorks";
+import { FeaturedMeals } from "@/components/common/home/FeaturedMeals";
+import { HomeCategories } from "@/components/common/home/HomeCategories";
+import { HomeHero } from "@/components/common/home/HomeHero";
+import { HowItWorks } from "@/components/common/home/HowItWorks";
 
 export default function Home() {
   return (
