@@ -1,0 +1,57 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+const customerLinks = [
+  { name: "Dashboard", href: "/customer/dashboard" },
+  { name: "My Orders", href: "/customer/orders" },
+  { name: "Cart", href: "/customer/cart" },
+  { name: "Profile", href: "/customer/profile" },
+];
+
+export default function Sidebar({
+  open,
+  setOpen,
+}: {
+  open: boolean;
+  setOpen: (v: boolean) => void;
+}) {
+  const pathname = usePathname();
+
+  return (
+    <>
+      {/* Mobile overlay */}
+      {open && (
+        <div
+          onClick={() => setOpen(false)}
+          className="fixed inset-0 bg-black/40 z-40 md:hidden"
+        />
+      )}
+
+      <aside
+        className={`fixed md:static z-50 w-64 bg-white border-r h-full transform transition-transform
+        ${open ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
+      >
+        <div className="p-5 text-xl font-bold text-green-600">FoodHub</div>
+
+        <nav className="px-3 space-y-1">
+          {customerLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`block px-4 py-2 rounded-md text-sm font-medium
+              ${
+                pathname === link.href
+                  ? "bg-green-600 text-white"
+                  : "text-gray-700 hover:bg-green-50"
+              }`}
+            >
+              {link.name}
+            </Link>
+          ))}
+        </nav>
+      </aside>
+    </>
+  );
+}
