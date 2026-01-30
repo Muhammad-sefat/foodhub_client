@@ -1,9 +1,61 @@
-import React from "react";
+"use client";
 
-export default function Login() {
+import Link from "next/link";
+
+export default function LoginPage() {
   return (
-    <div>
-      <h1>login</h1>
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
+      <div className="w-full max-w-md rounded-lg bg-white p-8 shadow">
+        <h1 className="mb-2 text-center text-2xl font-semibold text-black">
+          Welcome back
+        </h1>
+        <p className="mb-6 text-center text-sm text-gray-600">
+          Login to your FoodHub account
+        </p>
+
+        <form className="space-y-4">
+          <input
+            type="email"
+            placeholder="Email address"
+            className="w-full rounded border border-gray-300 px-4 py-2 focus:border-green-600 focus:outline-none"
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full rounded border border-gray-300 px-4 py-2 focus:border-green-600 focus:outline-none"
+          />
+
+          <button
+            type="submit"
+            className="w-full rounded bg-green-600 py-2 font-medium text-white hover:bg-green-700"
+          >
+            Login
+          </button>
+        </form>
+
+        {/* Divider */}
+        <div className="my-6 flex items-center gap-3">
+          <div className="h-px flex-1 bg-gray-200" />
+          <span className="text-sm text-gray-500">OR</span>
+          <div className="h-px flex-1 bg-gray-200" />
+        </div>
+
+        {/* Google Login */}
+        <button className="flex w-full items-center justify-center gap-2 rounded border border-gray-300 py-2 hover:bg-gray-50">
+          <span>Continue with Google</span>
+        </button>
+
+        <p className="mt-6 text-center text-sm text-gray-600">
+          Don’t have an account?{" "}
+          <Link
+            href="/register"
+            className="font-medium text-green-600 hover:underline"
+          >
+            Register
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }
