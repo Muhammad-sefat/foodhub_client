@@ -1,7 +1,15 @@
+import { FeaturedMeals } from "@/components/home/FeaturedMeals";
+import { HomeCategories } from "@/components/home/HomeCategories";
+import { HomeHero } from "@/components/home/HomeHero";
+import { HowItWorks } from "@/components/home/HowItWorks";
+
 export default function Home() {
   return (
-    <div className="flex justify-center items-center h-screen">
-      <h1>Hello</h1>
-    </div>
+    <>
+      <HomeHero />
+      <HomeCategories />
+      <FeaturedMeals />
+      <HowItWorks />
+    </>
   );
 }
