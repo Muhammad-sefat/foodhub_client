@@ -16,7 +16,7 @@ export default function Navbar() {
     <header className="w-full border-b bg-white">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
         {/* Logo */}
-        <Link href="/" className="text-xl font-bold text-green-500">
+        <Link href="/" className="text-xl font-bold text-green-600">
           FoodHub
         </Link>
 
@@ -29,10 +29,10 @@ export default function Navbar() {
               <Link
                 key={link.name}
                 href={link.href}
-                className={`text-sm font-medium transition ${
+                className={`text-sm font-medium transition text-black ${
                   isActive
-                    ? "text-green-500"
-                    : "text-gray-600 hover:text-green-500"
+                    ? "text-green-600 font-semibold"
+                    : "hover:text-green-600"
                 }`}
               >
                 {link.name}
