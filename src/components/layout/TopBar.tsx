@@ -1,5 +1,7 @@
 "use client";
 
+import { CURRENT_ROLE } from "@/constants/roles";
+
 export default function Topbar({ onMenuClick }: { onMenuClick: () => void }) {
   return (
     <header className="h-14 bg-white border-b flex items-center px-4">
@@ -8,7 +10,7 @@ export default function Topbar({ onMenuClick }: { onMenuClick: () => void }) {
       </button>
 
       <h1 className="text-sm font-semibold text-gray-800">
-        Customer Dashboard
+        {CURRENT_ROLE} Dashboard
       </h1>
     </header>
   );

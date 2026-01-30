@@ -13,13 +13,10 @@ export default function DashboardShell({
 
   return (
     <div className="min-h-screen flex bg-gray-50">
-      {/* Sidebar */}
       <Sidebar open={open} setOpen={setOpen} />
 
-      {/* Main */}
       <div className="flex-1 flex flex-col">
         <Topbar onMenuClick={() => setOpen(true)} />
-
         <main className="p-4 md:p-6">{children}</main>
       </div>
     </div>
