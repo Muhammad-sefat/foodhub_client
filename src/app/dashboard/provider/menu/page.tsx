@@ -1,3 +1,4 @@
+import AddMealModal from "@/components/provider/AddMealModal";
 import MenuItemCard from "@/components/provider/MenuItemCard";
 
 const menuItems = [
@@ -12,9 +13,7 @@ export default function ProviderMenuPage() {
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-semibold">My Menu</h2>
 
-        <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-          + Add Meal
-        </button>
+        <AddMealModal />
       </div>
 
       {menuItems.map((item, i) => (
