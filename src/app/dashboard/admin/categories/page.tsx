@@ -1,3 +1,4 @@
+import AddCategoryModal from "@/components/admin/AddCategoryModal";
 import CategoryCard from "@/components/admin/CategoryCard";
 
 const categories = ["Burger", "Pizza", "Pasta", "Sandwich"];
@@ -8,9 +9,7 @@ export default function AdminCategoriesPage() {
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-semibold">Categories</h2>
 
-        <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-          + Add Category
-        </button>
+        <AddCategoryModal />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
