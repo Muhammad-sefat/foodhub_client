@@ -1,8 +1,56 @@
 "use client";
 
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth.client";
+import { registerSchema, RegisterValues } from "@/lib/validations/auth";
 
 export default function RegisterPage() {
+  const router = useRouter();
+  
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = useForm<RegisterValues>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      role: "CUSTOMER",
+    },
+  });
+
+  const onSubmit = async (values: RegisterValues) => {
+    const toastId = toast.loading("Creating user...");
+    try {
+      const { error } = await authClient.signUp.email({
+        email: values.email,
+        password: values.password,
+        name: values.name,
+        // @ts-ignore - role is not strongly typed in better-auth client sometimes but backend handles it if using additional fields
+        role: values.role.toUpperCase(), 
+      });
+
+      if (error) {
+        console.log("Registration Error:", error);
+        toast.error(error.message || "Registration failed", { id: toastId });
+        return;
+      }
+
+      toast.success("User Created Successfully", { id: toastId });
+      router.push("/login");
+    } catch (err) {
+      console.log(err);
+      toast.error("Something went wrong, please try again.", { id: toastId });
+    }
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
       <div className="w-full max-w-md rounded-lg bg-white p-8 shadow">
@@ -13,36 +61,63 @@ export default function RegisterPage() {
           Join FoodHub and start ordering delicious meals
         </p>
 
-        <form className="space-y-4">
-          <input
-            type="text"
-            placeholder="Full name"
-            className="w-full rounded border border-gray-300 px-4 py-2 focus:border-green-600 focus:outline-none"
-          />
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div>
+            <input
+              {...register("name")}
+              type="text"
+              placeholder="Full name"
+              className="w-full rounded border border-gray-300 px-4 py-2 focus:border-green-600 focus:outline-none"
+            />
+            {errors.name && (
+              <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>
+            )}
+          </div>
 
-          <input
-            type="email"
-            placeholder="Email address"
-            className="w-full rounded border border-gray-300 px-4 py-2 focus:border-green-600 focus:outline-none"
-          />
+          <div>
+            <input
+              {...register("email")}
+              type="email"
+              placeholder="Email address"
+              className="w-full rounded border border-gray-300 px-4 py-2 focus:border-green-600 focus:outline-none"
+            />
+            {errors.email && (
+              <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>
+            )}
+          </div>
 
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full rounded border border-gray-300 px-4 py-2 focus:border-green-600 focus:outline-none"
-          />
+          <div>
+            <input
+              {...register("password")}
+              type="password"
+              placeholder="Password"
+              className="w-full rounded border border-gray-300 px-4 py-2 focus:border-green-600 focus:outline-none"
+            />
+            {errors.password && (
+              <p className="mt-1 text-xs text-red-500">{errors.password.message}</p>
+            )}
+          </div>
 
           {/* Role Selection */}
-          <select className="w-full rounded border border-gray-300 px-4 py-2 focus:border-green-600 focus:outline-none">
-            <option value="CUSTOMER">Customer</option>
-            <option value="PROVIDER">Provider</option>
-          </select>
+          <div>
+            <select
+              {...register("role")}
+              className="w-full rounded border border-gray-300 px-4 py-2 focus:border-green-600 focus:outline-none"
+            >
+              <option value="CUSTOMER">Customer</option>
+              <option value="PROVIDER">Provider</option>
+            </select>
+            {errors.role && (
+              <p className="mt-1 text-xs text-red-500">{errors.role.message}</p>
+            )}
+          </div>
 
           <button
             type="submit"
-            className="w-full rounded bg-green-600 py-2 font-medium text-white hover:bg-green-700"
+            disabled={isSubmitting}
+            className="w-full rounded bg-green-600 py-2 font-medium text-white hover:bg-green-700 disabled:opacity-50"
           >
-            Register
+            {isSubmitting ? "Creating..." : "Register"}
           </button>
         </form>
 

@@ -1,8 +1,50 @@
 "use client";
 
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth.client";
+import { loginSchema, LoginValues } from "@/lib/validations/auth";
 
 export default function LoginPage() {
+  const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = async (values: LoginValues) => {
+    const toastId = toast.loading("Logging in...");
+    try {
+      const { error } = await authClient.signIn.email({
+        email: values.email,
+        password: values.password,
+      });
+
+      if (error) {
+        toast.error(error.message, { id: toastId });
+        return;
+      }
+
+      toast.success("Login Successful", { id: toastId });
+      router.push("/");
+      router.refresh();
+    } catch (err) {
+       console.log(err);
+      toast.error("Something went wrong, please try again.", { id: toastId });
+    }
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md rounded-lg bg-white p-8 shadow">
@@ -13,24 +55,37 @@ export default function LoginPage() {
           Login to your FoodHub account
         </p>
 
-        <form className="space-y-4">
-          <input
-            type="email"
-            placeholder="Email address"
-            className="w-full rounded border border-gray-300 px-4 py-2 focus:border-green-600 focus:outline-none"
-          />
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div>
+            <input
+              {...register("email")}
+              type="email"
+              placeholder="Email address"
+              className="w-full rounded border border-gray-300 px-4 py-2 focus:border-green-600 focus:outline-none"
+            />
+             {errors.email && (
+              <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>
+            )}
+          </div>
 
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full rounded border border-gray-300 px-4 py-2 focus:border-green-600 focus:outline-none"
-          />
+          <div>
+            <input
+              {...register("password")}
+              type="password"
+              placeholder="Password"
+              className="w-full rounded border border-gray-300 px-4 py-2 focus:border-green-600 focus:outline-none"
+            />
+            {errors.password && (
+              <p className="mt-1 text-xs text-red-500">{errors.password.message}</p>
+            )}
+          </div>
 
           <button
             type="submit"
-            className="w-full rounded bg-green-600 py-2 font-medium text-white hover:bg-green-700"
+            disabled={isSubmitting}
+            className="w-full rounded bg-green-600 py-2 font-medium text-white hover:bg-green-700 disabled:opacity-50"
           >
-            Login
+            {isSubmitting ? "Logging in..." : "Login"}
           </button>
         </form>
 
