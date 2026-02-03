@@ -26,22 +26,26 @@ export default function LoginPage() {
   const onSubmit = async (values: LoginValues) => {
     const toastId = toast.loading("Logging in...");
     try {
-      const { error } = await authClient.signIn.email({
+      const res = await authClient.signIn.email({
         email: values.email,
         password: values.password,
       });
 
-      if (error) {
-        toast.error(error.message, { id: toastId });
+      if (res.error) {
+        toast.error(res.error.message, { id: toastId });
         return;
       }
+
+      // 🔍 Debug session
+      const session = await authClient.getSession();
+      console.log("SESSION:", session);
 
       toast.success("Login Successful", { id: toastId });
       router.push("/");
       router.refresh();
     } catch (err) {
-       console.log(err);
-      toast.error("Something went wrong, please try again.", { id: toastId });
+      console.log(err);
+      toast.error("Something went wrong", { id: toastId });
     }
   };
 
@@ -63,8 +67,10 @@ export default function LoginPage() {
               placeholder="Email address"
               className="w-full rounded border border-gray-300 px-4 py-2 focus:border-green-600 focus:outline-none"
             />
-             {errors.email && (
-              <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>
+            {errors.email && (
+              <p className="mt-1 text-xs text-red-500">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
@@ -76,7 +82,9 @@ export default function LoginPage() {
               className="w-full rounded border border-gray-300 px-4 py-2 focus:border-green-600 focus:outline-none"
             />
             {errors.password && (
-              <p className="mt-1 text-xs text-red-500">{errors.password.message}</p>
+              <p className="mt-1 text-xs text-red-500">
+                {errors.password.message}
+              </p>
             )}
           </div>
 

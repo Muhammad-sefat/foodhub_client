@@ -50,7 +50,7 @@ export default function Navbar({ user }: NavbarProps) {
 
   const handleDashboardClick = () => {
     if (!user) return;
-    
+
     if (user.role === "ADMIN") {
       router.push("/dashboard/admin");
     } else if (user.role === "PROVIDER") {
@@ -91,7 +91,7 @@ export default function Navbar({ user }: NavbarProps) {
 
         {/* Right */}
         {user ? (
-           <DropdownMenu>
+          <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="rounded-full focus:outline-none">
                 <Avatar>
@@ -105,21 +105,32 @@ export default function Navbar({ user }: NavbarProps) {
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuLabel>
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">{user.name}</p>
+                  <p className="text-sm font-medium leading-none">
+                    {user.name}
+                  </p>
                   <p className="text-xs leading-none text-muted-foreground">
                     {user.email}
                   </p>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleDashboardClick} className="cursor-pointer">
+              <DropdownMenuItem
+                onClick={handleDashboardClick}
+                className="cursor-pointer"
+              >
                 Dashboard
               </DropdownMenuItem>
-              <DropdownMenuItem disabled className="cursor-not-allowed opacity-50">
+              <DropdownMenuItem
+                disabled
+                className="cursor-not-allowed opacity-50"
+              >
                 Settings
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-red-600 focus:text-red-600">
+              <DropdownMenuItem
+                onClick={handleLogout}
+                className="cursor-pointer text-red-600 focus:text-red-600"
+              >
                 Logout
               </DropdownMenuItem>
             </DropdownMenuContent>

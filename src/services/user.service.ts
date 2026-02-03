@@ -1,11 +1,13 @@
 import { cookies } from "next/headers";
+
 export const userService = {
-  getSession: async function () {
+  async getSession() {
     try {
       const storeCookies = await cookies();
-      const authUrl = process.env.AUTH_URL;
 
-      const res = await fetch(`${authUrl}/get-session`, {
+      console.log(storeCookies.toString());
+
+      const res = await fetch(`${process.env.AUTH_URL}/api/auth/get-session`, {
         headers: {
           Cookie: storeCookies.toString(),
         },
@@ -13,7 +15,7 @@ export const userService = {
       });
 
       if (!res.ok) {
-        return { data: null, error: { message: "Failed to fetch session" } };
+        return { data: null, error: { message: "No session" } };
       }
 
       const session = await res.json();

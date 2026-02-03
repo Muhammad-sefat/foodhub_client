@@ -10,11 +10,10 @@ import { registerSchema, RegisterValues } from "@/lib/validations/auth";
 
 export default function RegisterPage() {
   const router = useRouter();
-  
+
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors, isSubmitting },
   } = useForm<RegisterValues>({
     resolver: zodResolver(registerSchema),
@@ -29,25 +28,21 @@ export default function RegisterPage() {
   const onSubmit = async (values: RegisterValues) => {
     const toastId = toast.loading("Creating user...");
     try {
-      const { error } = await authClient.signUp.email({
+      const res = await authClient.signUp.email({
         email: values.email,
         password: values.password,
         name: values.name,
-        // @ts-ignore - role is not strongly typed in better-auth client sometimes but backend handles it if using additional fields
-        role: values.role.toUpperCase(), 
       });
 
-      if (error) {
-        console.log("Registration Error:", error);
-        toast.error(error.message || "Registration failed", { id: toastId });
+      if (res.error) {
+        toast.error(res.error.message, { id: toastId });
         return;
       }
 
-      toast.success("User Created Successfully", { id: toastId });
+      toast.success("Account created. Please login.", { id: toastId });
       router.push("/login");
     } catch (err) {
-      console.log(err);
-      toast.error("Something went wrong, please try again.", { id: toastId });
+      toast.error("Something went wrong", { id: toastId });
     }
   };
 
@@ -82,7 +77,9 @@ export default function RegisterPage() {
               className="w-full rounded border border-gray-300 px-4 py-2 focus:border-green-600 focus:outline-none"
             />
             {errors.email && (
-              <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>
+              <p className="mt-1 text-xs text-red-500">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
@@ -94,7 +91,9 @@ export default function RegisterPage() {
               className="w-full rounded border border-gray-300 px-4 py-2 focus:border-green-600 focus:outline-none"
             />
             {errors.password && (
-              <p className="mt-1 text-xs text-red-500">{errors.password.message}</p>
+              <p className="mt-1 text-xs text-red-500">
+                {errors.password.message}
+              </p>
             )}
           </div>
 
