@@ -5,8 +5,6 @@ export const userService = {
     try {
       const storeCookies = await cookies();
 
-      console.log(storeCookies.toString());
-
       const res = await fetch(`${process.env.AUTH_URL}/api/auth/get-session`, {
         headers: {
           Cookie: storeCookies.toString(),
@@ -17,7 +15,6 @@ export const userService = {
       if (!res.ok) {
         return { data: null, error: { message: "No session" } };
       }
-
       const session = await res.json();
       return { data: session, error: null };
     } catch (error) {

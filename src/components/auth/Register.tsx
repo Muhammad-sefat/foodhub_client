@@ -21,7 +21,6 @@ export default function RegisterPage() {
       name: "",
       email: "",
       password: "",
-      role: "CUSTOMER",
     },
   });
 
@@ -42,6 +41,7 @@ export default function RegisterPage() {
       toast.success("Account created. Please login.", { id: toastId });
       router.push("/login");
     } catch (err) {
+      console.log(err);
       toast.error("Something went wrong", { id: toastId });
     }
   };

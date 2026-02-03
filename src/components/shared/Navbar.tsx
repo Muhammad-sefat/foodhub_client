@@ -24,7 +24,7 @@ interface User {
   id: string;
   name: string;
   email: string;
-  image?: string | null; // Allow null
+  image?: string | null;
   role: string;
 }
 
@@ -41,7 +41,7 @@ export default function Navbar({ user }: NavbarProps) {
       fetchOptions: {
         onSuccess: () => {
           toast.success("Logged out successfully");
-          router.push("/login"); // or refresh
+          router.push("/login");
           router.refresh();
         },
       },

@@ -3,17 +3,19 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { sidebarLinks } from "@/constants/sidebarLinks";
-import { CURRENT_ROLE } from "@/constants/roles";
+import { Role } from "@/constants/roles";
 
 export default function Sidebar({
   open,
   setOpen,
+  role,
 }: {
   open: boolean;
   setOpen: (v: boolean) => void;
+  role: Role;
 }) {
   const pathname = usePathname();
-  const links = sidebarLinks[CURRENT_ROLE];
+  const links = sidebarLinks[role];
 
   return (
     <>
