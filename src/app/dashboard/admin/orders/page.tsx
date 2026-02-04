@@ -1,23 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import AdminOrderRow from "@/components/admin/OrderRow";
+import { AdminService } from "@/services/admin.service";
 
-const orders = [
-  {
-    id: "ORD-201",
-    customer: "Sefat",
-    provider: "Burger House",
-    total: 25,
-    status: "DELIVERED",
-  },
-  {
-    id: "ORD-202",
-    customer: "Rahim",
-    provider: "Pizza Palace",
-    total: 18,
-    status: "PREPARING",
-  },
-];
+export default async function AdminOrdersPage() {
+  const orders = await AdminService.getAllOrders();
 
-export default function AdminOrdersPage() {
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">All Orders</h2>
@@ -35,9 +22,24 @@ export default function AdminOrdersPage() {
           </thead>
 
           <tbody>
-            {orders.map((order) => (
-              <AdminOrderRow key={order.id} {...order} />
-            ))}
+            {orders.length === 0 ? (
+              <tr>
+                <td colSpan={5} className="p-6 text-center text-gray-500">
+                  No orders found yet 📦
+                </td>
+              </tr>
+            ) : (
+              orders.map((order: any) => (
+                <AdminOrderRow
+                  key={order.id}
+                  id={order.id}
+                  customer={order.customer?.name || "—"}
+                  provider={order.provider?.restaurant || "—"}
+                  total={order.totalAmount}
+                  status={order.status}
+                />
+              ))
+            )}
           </tbody>
         </table>
       </div>

@@ -1,14 +1,6 @@
-export default function UserRow({
-  name,
-  email,
-  role,
-  status,
-}: {
-  name: string;
-  email: string;
-  role: string;
-  status: string;
-}) {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+export default function UserRow({ name, email, role, status }: any) {
   return (
     <tr className="border-b">
       <td className="py-2">{name}</td>

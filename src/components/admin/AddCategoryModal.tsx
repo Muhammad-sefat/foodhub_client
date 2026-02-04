@@ -10,22 +10,21 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { CategoryService } from "@/services/category.service";
 
 export default function AddCategoryModal() {
   const [open, setOpen] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const formData = new FormData(e.target as HTMLFormElement);
-    const name = formData.get("name");
+    const name = formData.get("name") as string;
 
-    console.log("NEW CATEGORY 👉", name);
-
-    // later:
-    // await adminService.createCategory({ name })
+    await CategoryService.create(name);
 
     setOpen(false);
+    window.location.reload();
   };
 
   return (
