@@ -1,21 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import OrderRow from "@/components/provider/OrderRow";
+import { ProviderService } from "@/services/provider.service";
 
-const orders = [
-  {
-    id: "ORD-101",
-    customer: "Sefat",
-    total: 18.5,
-    status: "PLACED",
-  },
-  {
-    id: "ORD-102",
-    customer: "Rahim",
-    total: 22,
-    status: "PREPARING",
-  },
-];
+export default async function ProviderOrdersPage() {
+  const orders = await ProviderService.getOrders();
 
-export default function ProviderOrdersPage() {
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Incoming Orders</h2>
@@ -33,9 +22,17 @@ export default function ProviderOrdersPage() {
           </thead>
 
           <tbody className="p-2">
-            {orders.map((order) => (
-              <OrderRow key={order.id} {...order} />
-            ))}
+            {orders.length === 0 ? (
+              <tr>
+                <td colSpan={5} className="p-4 text-center text-gray-500">
+                  No incoming orders yet.
+                </td>
+              </tr>
+            ) : (
+              orders.map((order: any) => (
+                <OrderRow key={order.id} {...order} />
+              ))
+            )}
           </tbody>
         </table>
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -18,30 +18,49 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { CategoryService } from "@/services/category.service";
+import { MealService } from "@/services/meal.service";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function AddMealModal() {
   const [open, setOpen] = useState(false);
+  const [categories, setCategories] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
-  // temporary static submit
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const data = await CategoryService.getAll();
+      setCategories(data);
+    };
+    fetchCategories();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
 
     const formData = new FormData(e.target as HTMLFormElement);
 
     const data = {
-      title: formData.get("title"),
-      description: formData.get("description"),
+      title: formData.get("title") as string,
+      description: formData.get("description") as string,
       price: Number(formData.get("price")),
-      categoryId: formData.get("categoryId"),
-      imageUrl: formData.get("imageUrl"),
+      categoryId: formData.get("categoryId") as string,
+      imageUrl: formData.get("imageUrl") as string,
     };
 
-    console.log("NEW MEAL 👉", data);
-
-    // later:
-    // await providerService.createMeal(data)
-
-    setOpen(false);
+    try {
+      await MealService.create(data);
+      toast.success("Meal created successfully! 🍳");
+      setOpen(false);
+      router.refresh();
+    } catch (error: any) {
+      toast.error(error.message || "Failed to create meal");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -56,12 +75,18 @@ export default function AddMealModal() {
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <Input name="title" placeholder="Meal title" required />
+          <Input
+            name="title"
+            placeholder="Meal title"
+            required
+            disabled={isLoading}
+          />
 
           <Textarea
             name="description"
             placeholder="Meal description"
             required
+            disabled={isLoading}
           />
 
           <Input
@@ -70,33 +95,43 @@ export default function AddMealModal() {
             step="0.01"
             placeholder="Price"
             required
+            disabled={isLoading}
           />
 
-          <Select name="categoryId" required>
+          <Select name="categoryId" required disabled={isLoading}>
             <SelectTrigger>
               <SelectValue placeholder="Select category" />
             </SelectTrigger>
             <SelectContent>
-              {/* static for now, later API */}
-              <SelectItem value="burger">Burger</SelectItem>
-              <SelectItem value="pizza">Pizza</SelectItem>
-              <SelectItem value="sandwich">Sandwich</SelectItem>
-              <SelectItem value="pasta">Pasta</SelectItem>
+              {categories.map((cat) => (
+                <SelectItem key={cat.id} value={cat.id}>
+                  {cat.name}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
 
-          <Input name="imageUrl" placeholder="Image URL (optional)" />
+          <Input
+            name="imageUrl"
+            placeholder="Image URL (optional)"
+            disabled={isLoading}
+          />
 
           <div className="flex justify-end gap-2 pt-2">
             <Button
               type="button"
               variant="outline"
               onClick={() => setOpen(false)}
+              disabled={isLoading}
             >
               Cancel
             </Button>
-            <Button type="submit" className="bg-green-600 hover:bg-green-700">
-              Save Meal
+            <Button
+              type="submit"
+              className="bg-green-600 hover:bg-green-700"
+              disabled={isLoading}
+            >
+              {isLoading ? "Saving..." : "Save Meal"}
             </Button>
           </div>
         </form>

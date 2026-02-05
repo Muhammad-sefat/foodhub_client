@@ -3,19 +3,28 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 export const CategoryService = {
   async getAll() {
     try {
+      console.log("[CategoryService] Fetching from:", `${API_URL}/api/categories`);
       const res = await fetch(`${API_URL}/api/categories`, {
         credentials: "include",
         cache: "no-store",
       });
 
+      console.log("[CategoryService] Response status:", res.status);
+
       if (!res.ok) {
-        throw new Error("Failed to fetch categories");
+        const errorText = await res.text();
+        console.error("[CategoryService] Error response:", errorText);
+        throw new Error(`Failed to fetch categories: ${res.status} - ${errorText}`);
       }
 
-      const data = await res.json();
+      const response = await res.json();
+      console.log("[CategoryService] Received data:", response);
+
+      // Backend returns { success: true, data: [...] }
+      const data = response.data || response;
       return Array.isArray(data) ? data : [];
     } catch (error) {
-      console.error("Get categories error 👉", error);
+      console.error("[CategoryService] Get categories error 👉", error);
       return [];
     }
   },
@@ -30,7 +39,9 @@ export const CategoryService = {
       });
 
       if (!res.ok) {
-        throw new Error("Failed to create category");
+        const errorData = await res.json().catch(() => ({}));
+        const errorMessage = errorData.message || errorData.error || `Failed to create category (${res.status})`;
+        throw new Error(errorMessage);
       }
 
       return await res.json();

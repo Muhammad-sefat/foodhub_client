@@ -11,9 +11,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CategoryService } from "@/services/category.service";
+import { toast } from "sonner";
 
 export default function AddCategoryModal() {
   const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,10 +23,24 @@ export default function AddCategoryModal() {
     const formData = new FormData(e.target as HTMLFormElement);
     const name = formData.get("name") as string;
 
-    await CategoryService.create(name);
+    if (!name.trim()) {
+      toast.error("Category name cannot be empty");
+      return;
+    }
 
-    setOpen(false);
-    window.location.reload();
+    setIsLoading(true);
+
+    try {
+      await CategoryService.create(name);
+      toast.success("Category created successfully!");
+      setOpen(false);
+      window.location.reload();
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Failed to create category";
+      toast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -41,19 +57,29 @@ export default function AddCategoryModal() {
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <Input name="name" placeholder="Category name" required />
+          <Input
+            name="name"
+            placeholder="Category name"
+            required
+            disabled={isLoading}
+          />
 
           <div className="flex justify-end gap-2">
             <Button
               type="button"
               variant="outline"
               onClick={() => setOpen(false)}
+              disabled={isLoading}
             >
               Cancel
             </Button>
 
-            <Button type="submit" className="bg-green-600 hover:bg-green-700">
-              Save
+            <Button
+              type="submit"
+              className="bg-green-600 hover:bg-green-700"
+              disabled={isLoading}
+            >
+              {isLoading ? "Saving..." : "Save"}
             </Button>
           </div>
         </form>

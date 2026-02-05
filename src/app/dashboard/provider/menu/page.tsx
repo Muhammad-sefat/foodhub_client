@@ -1,13 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import AddMealModal from "@/components/provider/AddMealModal";
 import MenuItemCard from "@/components/provider/MenuItemCard";
+import { MealService } from "@/services/meal.service";
 
-const menuItems = [
-  { title: "Chicken Burger", price: 6.5, category: "Burger" },
-  { title: "Pepperoni Pizza", price: 8.5, category: "Pizza" },
-  { title: "Club Sandwich", price: 5.5, category: "Sandwich" },
-];
+export default async function ProviderMenuPage() {
+  const meals = await MealService.getAll();
 
-export default function ProviderMenuPage() {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
@@ -16,9 +14,17 @@ export default function ProviderMenuPage() {
         <AddMealModal />
       </div>
 
-      {menuItems.map((item, i) => (
-        <MenuItemCard key={i} {...item} />
-      ))}
+      {meals.length === 0 ? (
+        <div className="bg-white border rounded-lg p-6 text-center text-gray-500">
+          No meals found. Start by adding one! 🍽️
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {meals.map((item: any) => (
+            <MenuItemCard key={item.id} {...item} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
