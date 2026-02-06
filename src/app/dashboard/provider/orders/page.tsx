@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import OrderRow from "@/components/provider/OrderRow";
-import { ProviderService } from "@/services/provider.service";
+import { ProviderServerService } from "@/services/provider.server";
 
 export default async function ProviderOrdersPage() {
-  const orders = await ProviderService.getOrders();
+  const orders = await ProviderServerService.getOrders();
 
   return (
     <div className="space-y-4">

@@ -1,5 +1,3 @@
-import { serverFetch } from "@/lib/serverFetch";
-
 const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
 interface ProfileData {
@@ -8,20 +6,6 @@ interface ProfileData {
 }
 
 export const ProviderService = {
-    // Get provider profile
-    async getProfile() {
-        try {
-            console.log("[ProviderService] Fetching profile");
-            const response = await serverFetch(`${API_URL}/api/provider/dashboard`);
-            console.log("[ProviderService] Profile received:", response);
-
-            return response.data || response;
-        } catch (error) {
-            console.error("[ProviderService] Get profile error 👉", error);
-            throw error;
-        }
-    },
-
     // Create provider profile
     async createProfile(profileData: ProfileData) {
         try {
@@ -46,22 +30,6 @@ export const ProviderService = {
         } catch (error) {
             console.error("[ProviderService] Create profile error 👉", error);
             throw error;
-        }
-    },
-
-    // Get provider orders
-    async getOrders() {
-        try {
-            console.log("[ProviderService] Fetching orders");
-            const response = await serverFetch(`${API_URL}/api/provider/orders`);
-            console.log("[ProviderService] Orders received:", response);
-
-            // Backend returns { success: true, data: [...] }
-            const data = response.data || response;
-            return Array.isArray(data) ? data : [];
-        } catch (error) {
-            console.error("[ProviderService] Get orders error 👉", error);
-            return [];
         }
     },
 
@@ -91,36 +59,5 @@ export const ProviderService = {
             throw error;
         }
     },
-
-    // Get dashboard stats
-    async getDashboardStats() {
-        try {
-            console.log("[ProviderService] Calculating dashboard stats");
-            const orders = await this.getOrders();
-
-            const totalOrders = orders.length;
-            const activeOrders = orders.filter(
-                (order: any) => order.status !== "DELIVERED" && order.status !== "CANCELLED"
-            ).length;
-            const revenue = orders
-                .filter((order: any) => order.status === "DELIVERED")
-                .reduce((sum: number, order: any) => sum + (order.totalAmount || 0), 0);
-
-            const stats = {
-                totalOrders,
-                activeOrders,
-                revenue,
-            };
-
-            console.log("[ProviderService] Dashboard stats:", stats);
-            return stats;
-        } catch (error) {
-            console.error("[ProviderService] Get dashboard stats error 👉", error);
-            return {
-                totalOrders: 0,
-                activeOrders: 0,
-                revenue: 0,
-            };
-        }
-    },
 };
+
