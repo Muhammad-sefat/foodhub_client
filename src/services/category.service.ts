@@ -51,21 +51,21 @@ export const CategoryService = {
     }
   },
 
-  // async delete(id: string) {
-  //   try {
-  //     const res = await fetch(`${API_URL}/api/admin/categories/${id}`, {
-  //       method: "DELETE",
-  //       credentials: "include",
-  //     });
+  async delete(id: string) {
+    try {
+      const res = await fetch(`${API_URL}/api/admin/categories/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
 
-  //     if (!res.ok) {
-  //       throw new Error("Failed to delete category");
-  //     }
+      if (!res.ok) {
+        throw new Error("Failed to delete category");
+      }
 
-  //     return true;
-  //   } catch (error) {
-  //     console.error("Delete category error 👉", error);
-  //     throw error;
-  //   }
-  // },
+      return true;
+    } catch (error) {
+      console.error("Delete category error 👉", error);
+      throw error;
+    }
+  },
 };

@@ -59,4 +59,25 @@ export const AdminService = {
     const orders = response.data || response;
     return Array.isArray(orders) ? orders : [];
   },
+
+  async updateUserStatus(id: string, status: string) {
+    try {
+        console.log("[AdminService] Updating user status:", id, status);
+        const res = await fetch(`${API_URL}/api/admin/users/${id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({ status }),
+        });
+
+        if (!res.ok) {
+            throw new Error("Failed to update user status");
+        }
+        
+        return await res.json();
+    } catch (error) {
+        console.error("[AdminService] Update user status error 👉", error);
+        throw error;
+    }
+  }
 };

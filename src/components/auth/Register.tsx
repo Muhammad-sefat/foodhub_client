@@ -27,11 +27,11 @@ export default function RegisterPage() {
   const onSubmit = async (values: RegisterValues) => {
     const toastId = toast.loading("Creating user...");
     try {
-      const res = await authClient.signUp.email({
-        email: values.email,
-        password: values.password,
-        name: values.name,
-      });
+        const res = await authClient.signUp.email({
+          email: values.email,
+          password: values.password,
+          name: values.name
+        });
 
       if (res.error) {
         toast.error(res.error.message, { id: toastId });

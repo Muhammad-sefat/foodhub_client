@@ -22,6 +22,22 @@ export const ProviderServerService = {
             return null;
         }
     },
+    
+    // Get provider meals
+    async getMeals() {
+        try {
+            console.log("[ProviderServerService] Fetching meals");
+            // Assuming this endpoint exists based on usual REST patterns for sub-resources
+            const response = await serverFetch(`${API_URL}/api/provider/meals`);
+            console.log("[ProviderServerService] Meals received:", response);
+
+            const data = response.data || response;
+            return Array.isArray(data) ? data : [];
+        } catch (error: any) {
+             console.error("[ProviderServerService] Get meals error 👉", error);
+             return [];
+        }
+    },
 
     // Get provider orders
     async getOrders() {
