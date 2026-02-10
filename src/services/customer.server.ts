@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { serverFetch } from "@/lib/serverFetch";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL!;
@@ -27,11 +28,11 @@ export const CustomerServerService = {
       const totalOrders = orders.length;
       const pendingOrders = orders.filter(
         (order: any) =>
-          order.status !== "DELIVERED" && order.status !== "CANCELLED"
+          order.status !== "DELIVERED" && order.status !== "CANCELLED",
       ).length;
       const totalSpent = orders.reduce(
         (sum: number, order: any) => sum + (order.totalAmount || 0),
-        0
+        0,
       );
 
       return {

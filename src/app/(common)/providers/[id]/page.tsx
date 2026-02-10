@@ -1,33 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import MealCard from "@/components/common/meals/MealCard";
+import { ProviderServerService } from "@/services/provider.server";
 
-const providerResponse = {
-  success: true,
-  data: {
-    restaurant: "Burger House",
-    address: "Dhaka",
-    meals: [
-      {
-        id: "233f66d5",
-        title: "Chicken Burger",
-        description: "Crispy chicken burger . this burger is so delicious",
-        price: 6.5,
-        category: { name: "Burger" },
-        provider: { restaurant: "Burger House" },
-      },
-      {
-        id: "23c5986c",
-        title: "Club Sandwich",
-        description: "Triple-layer sandwich with chicken, lettuce, and mayo",
-        price: 5.5,
-        category: { name: "Sandwich" },
-        provider: { restaurant: "Burger House" },
-      },
-    ],
-  },
+type Props = {
+  params: Promise<{ id: string }>;
 };
 
-export default function ProviderDetailsPage() {
-  const provider = providerResponse.data;
+export default async function ProviderDetailsPage({ params }: Props) {
+  const { id } = await params;
+
+  const provider = await ProviderServerService.getProviderById(id);
+
+  if (!provider) {
+    return <div className="p-10">Provider not found</div>;
+  }
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10">
@@ -41,7 +27,7 @@ export default function ProviderDetailsPage() {
       <h2 className="mb-4 text-xl font-semibold text-black">Menu</h2>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {provider.meals.map((meal) => (
+        {provider.meals.map((meal: any) => (
           <MealCard key={meal.id} meal={meal} />
         ))}
       </div>

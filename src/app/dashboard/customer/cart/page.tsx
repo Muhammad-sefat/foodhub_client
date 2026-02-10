@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -30,23 +31,17 @@ export default function CartPage() {
 
     setIsLoading(true);
     try {
-      // Group by restaurant if backend creates separate orders, 
-      // but for now assume one big order or backend handles splitting.
-      // Based on typical implementation, we might send an array of items.
-      // However, usually detailed order creation requires structure.
-      // Let's assume backend accepts { items: [...] } structure.
-      
       const orderData = {
         items: cartItems.map((item) => ({
           mealId: item.id,
           quantity: item.qty,
-          price: item.price // Optional if backend calculates
+          price: item.price,
         })),
         totalAmount: total,
       };
 
       await CustomerService.createOrder(orderData);
-      
+
       CartUtils.clearCart();
       toast.success("Order placed successfully! 🍔");
       router.push("/dashboard/customer/orders");
@@ -60,7 +55,7 @@ export default function CartPage() {
 
   const handleUpdateQty = (id: string, qty: number) => {
     CartUtils.updateQty(id, qty);
-    setCartItems(CartUtils.getCart()); 
+    setCartItems(CartUtils.getCart());
   };
 
   const handleRemove = (id: string) => {
@@ -68,7 +63,7 @@ export default function CartPage() {
     setCartItems(CartUtils.getCart());
   };
 
-  if (isMounting) return null; // Prevent hydration mismatch
+  if (isMounting) return null;
 
   return (
     <div className="space-y-6">
@@ -81,28 +76,14 @@ export default function CartPage() {
       ) : (
         <div className="space-y-4">
           {cartItems.map((item) => (
-            // Assuming CartItemCard has props compatible or needs refactor.
-            // Let's inspect CartItemCard first or just construct UI here if simple.
-            // For safety, I'll use the existing CartItem component if compatible, 
-            // but mapped to match its expected props.
-            <CartItemCard 
-              key={item.id} 
-              {...item} 
-              // Passing extra handlers if component supports them, otherwise user can't update qty
-            />
+            <CartItemCard key={item.id} {...item} />
           ))}
-
-          {/* 
-            Since I don't know if CartItemCard supports update/remove handlers,
-            I will render a simple list here if CartItemCard is static.
-            Actually, let's stick to the previous simple implementation + actions.
-          */}
         </div>
       )}
 
-       {cartItems.length > 0 && (
+      {cartItems.length > 0 && (
         <div className="border-t pt-4">
-           <div className="flex justify-between items-center mb-4 text-xl font-bold">
+          <div className="flex justify-between items-center mb-4 text-xl font-bold">
             <span>Total:</span>
             <span>${total.toFixed(2)}</span>
           </div>
@@ -115,7 +96,7 @@ export default function CartPage() {
             {isLoading ? "Placing Order..." : "Proceed to Checkout"}
           </Button>
         </div>
-       )}
+      )}
     </div>
   );
 }

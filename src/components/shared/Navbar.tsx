@@ -120,12 +120,6 @@ export default function Navbar({ user }: NavbarProps) {
               >
                 Dashboard
               </DropdownMenuItem>
-              <DropdownMenuItem
-                disabled
-                className="cursor-not-allowed opacity-50"
-              >
-                Settings
-              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={handleLogout}

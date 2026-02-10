@@ -27,21 +27,18 @@ export default function RegisterPage() {
   const onSubmit = async (values: RegisterValues) => {
     const toastId = toast.loading("Creating user...");
     try {
-        const res = await authClient.signUp.email({
-          email: values.email,
-          password: values.password,
-          name: values.name
-        });
-
-      if (res.error) {
-        toast.error(res.error.message, { id: toastId });
-        return;
-      }
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(values),
+      });
 
       toast.success("Account created. Please login.", { id: toastId });
       router.push("/login");
     } catch (err) {
-      console.log(err);
       toast.error("Something went wrong", { id: toastId });
     }
   };
@@ -57,11 +54,15 @@ export default function RegisterPage() {
         </p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          {/* Name */}
           <div>
+            <label className="mb-1 block text-sm font-medium text-gray-700">
+              Full Name
+            </label>
             <input
               {...register("name")}
               type="text"
-              placeholder="Full name"
+              placeholder="John Doe"
               className="w-full rounded border border-gray-300 px-4 py-2 focus:border-green-600 focus:outline-none"
             />
             {errors.name && (
@@ -69,11 +70,15 @@ export default function RegisterPage() {
             )}
           </div>
 
+          {/* Email */}
           <div>
+            <label className="mb-1 block text-sm font-medium text-gray-700">
+              Email Address
+            </label>
             <input
               {...register("email")}
               type="email"
-              placeholder="Email address"
+              placeholder="john@example.com"
               className="w-full rounded border border-gray-300 px-4 py-2 focus:border-green-600 focus:outline-none"
             />
             {errors.email && (
@@ -83,11 +88,15 @@ export default function RegisterPage() {
             )}
           </div>
 
+          {/* Password */}
           <div>
+            <label className="mb-1 block text-sm font-medium text-gray-700">
+              Password
+            </label>
             <input
               {...register("password")}
               type="password"
-              placeholder="Password"
+              placeholder="••••••••"
               className="w-full rounded border border-gray-300 px-4 py-2 focus:border-green-600 focus:outline-none"
             />
             {errors.password && (
@@ -97,24 +106,11 @@ export default function RegisterPage() {
             )}
           </div>
 
-          {/* Role Selection */}
-          <div>
-            <select
-              {...register("role")}
-              className="w-full rounded border border-gray-300 px-4 py-2 focus:border-green-600 focus:outline-none"
-            >
-              <option value="CUSTOMER">Customer</option>
-              <option value="PROVIDER">Provider</option>
-            </select>
-            {errors.role && (
-              <p className="mt-1 text-xs text-red-500">{errors.role.message}</p>
-            )}
-          </div>
-
+          {/* Submit */}
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full rounded bg-green-600 py-2 font-medium text-white hover:bg-green-700 disabled:opacity-50"
+            className="w-full rounded bg-green-600 py-2 font-medium text-white hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isSubmitting ? "Creating..." : "Register"}
           </button>

@@ -20,14 +20,14 @@ type Meal = {
 
 export default function MealCard({ meal }: { meal: Meal }) {
   const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent navigation
+    e.preventDefault();
     e.stopPropagation();
 
     CartUtils.addToCart({
       id: meal.id,
       name: meal.title,
       price: meal.price,
-      restaurantId: "unknown", // Ideally backend provides this or we fetch it
+      restaurantId: "unknown",
       restaurantName: meal.provider.restaurant,
       qty: 1,
     });
@@ -51,16 +51,19 @@ export default function MealCard({ meal }: { meal: Meal }) {
         <div className="mt-3 flex items-center justify-between">
           <span className="font-semibold text-green-600">${meal.price}</span>
 
-          <span className="text-xs text-gray-500">{meal.category.name}</span>
+          <span className="text-xs text-gray-500">{meal.category?.name}</span>
         </div>
 
         <div className="mt-2 flex items-center justify-between gap-2">
-            <p className="text-xs text-gray-500">
-            by {meal.provider.restaurant}
-            </p>
-            <Button size="sm" variant="outline" onClick={handleAddToCart} className="hover:bg-green-50 hover:text-green-600 hover:border-green-200">
-                Add to Cart
-            </Button>
+          <p className="text-xs text-gray-500">by {meal.provider.restaurant}</p>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={handleAddToCart}
+            className="hover:bg-green-50 hover:text-green-600 hover:border-green-200"
+          >
+            Add to Cart
+          </Button>
         </div>
       </div>
     </Link>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
 export const CustomerService = {
@@ -34,21 +35,21 @@ export const CustomerService = {
   // Get User Orders (Client Side)
   async getOrdersClient() {
     try {
-        console.log("[CustomerService] Fetching orders (Client)");
-        const res = await fetch(`${API_URL}/api/orders`, {
-            credentials: "include"
-        });
-        
-        if (!res.ok) {
-            throw new Error("Failed to fetch orders");
-        }
+      console.log("[CustomerService] Fetching orders (Client)");
+      const res = await fetch(`${API_URL}/api/orders`, {
+        credentials: "include",
+      });
 
-        const response = await res.json();
-        const data = response.data || response;
-        return Array.isArray(data) ? data : [];
+      if (!res.ok) {
+        throw new Error("Failed to fetch orders");
+      }
+
+      const response = await res.json();
+      const data = response.data || response;
+      return Array.isArray(data) ? data : [];
     } catch (error) {
-        console.error("[CustomerService] Get orders error 👉", error);
-        return [];
+      console.error("[CustomerService] Get orders error 👉", error);
+      return [];
     }
-  }
+  },
 };

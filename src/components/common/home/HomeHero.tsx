@@ -1,4 +1,33 @@
-export function HomeHero() {
+"use client";
+
+import Link from "next/link";
+import { useState } from "react";
+import { BecomeProviderModal } from "./BecomeProviderModal";
+
+type Props = {
+  user: {
+    id: string;
+    role: "CUSTOMER" | "PROVIDER" | "ADMIN";
+  } | null;
+};
+
+export function HomeHero({ user }: Props) {
+  const [open, setOpen] = useState(false);
+
+  const handleProviderClick = () => {
+    if (!user) {
+      window.location.href = "/login";
+      return;
+    }
+
+    if (user.role === "PROVIDER") {
+      window.location.href = "/provider/dashboard";
+      return;
+    }
+
+    setOpen(true);
+  };
+
   return (
     <section className="bg-green-50">
       <div className="mx-auto max-w-7xl px-4 py-20 text-center">
@@ -7,26 +36,23 @@ export function HomeHero() {
           <span className="text-green-600">Delicious Meals</span>
         </h1>
 
-        <p className="mx-auto mt-4 max-w-2xl text-gray-600">
-          Browse meals from trusted local food providers and get your favorite
-          food delivered fast.
-        </p>
-
-        <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-          <a
+        <div className="mt-8 flex justify-center gap-4">
+          <Link
             href="/meals"
-            className="rounded bg-green-600 px-6 py-3 text-white font-medium hover:bg-green-700"
+            className="rounded bg-green-600 px-6 py-3 text-white font-medium"
           >
             Browse Meals
-          </a>
+          </Link>
 
-          <a
-            href="/register"
-            className="rounded border border-green-600 px-6 py-3 font-medium text-green-600 hover:bg-green-100"
+          <button
+            onClick={handleProviderClick}
+            className="rounded border border-green-600 px-6 py-3 font-medium text-green-600"
           >
             Become a Provider
-          </a>
+          </button>
         </div>
+
+        <BecomeProviderModal open={open} onClose={() => setOpen(false)} />
       </div>
     </section>
   );

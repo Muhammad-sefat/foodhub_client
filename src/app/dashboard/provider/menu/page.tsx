@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import AddMealModal from "@/components/provider/AddMealModal";
 import MenuItemCard from "@/components/provider/MenuItemCard";
 import { ProviderServerService } from "@/services/provider.server";
 
 export default async function ProviderMenuPage() {
-  const meals = await ProviderServerService.getMeals();
+  const meals = await ProviderServerService.getMyMeals();
 
   return (
     <div className="space-y-4">
