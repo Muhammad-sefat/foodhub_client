@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { ProviderService } from "@/services/provider.service";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const STATUS_COLORS: Record<string, string> = {
@@ -15,26 +15,34 @@ const STATUS_COLORS: Record<string, string> = {
 
 export default function OrderRow({
   id,
-  user,
+  customer,
   totalAmount,
   status,
 }: {
   id: string;
-  user: { name: string };
+  customer: { name: string };
   totalAmount: number;
   status: string;
 }) {
-  const router = useRouter();
+  const [currentStatus, setCurrentStatus] = useState(status);
   const [isUpdating, setIsUpdating] = useState(false);
 
   const handleStatusChange = async (newStatus: string) => {
     setIsUpdating(true);
+
     try {
+      // 1️⃣ Instantly update UI
+      setCurrentStatus(newStatus);
+
+      // 2️⃣ Update backend
       await ProviderService.updateOrderStatus(id, newStatus);
+
       toast.success(`Order set to ${newStatus}`);
-      router.refresh();
     } catch (error: any) {
       toast.error(error.message || "Failed to update status");
+
+      // rollback if failed
+      setCurrentStatus(status);
     } finally {
       setIsUpdating(false);
     }
@@ -42,28 +50,32 @@ export default function OrderRow({
 
   return (
     <tr className="border-b">
-      <td className="p-2 font-mono text-xs max-w-[100px] truncate" title={id}>{id}</td>
-      <td>{user.name}</td>
+      <td className="p-3 font-mono text-xs max-w-25 truncate" title={id}>
+        {id}
+      </td>
+      <td>{customer?.name || "Unknown"}</td>
       <td>${totalAmount}</td>
       <td>
-        <span className={`px-2 py-1 text-xs rounded ${STATUS_COLORS[status] || "bg-gray-100 text-gray-700"}`}>
-          {status}
+        <span
+          className={`px-2 py-1 text-xs rounded ${STATUS_COLORS[currentStatus] || "bg-gray-100 text-gray-700"}`}
+        >
+          {currentStatus}
         </span>
       </td>
       <td>
         <select
-          value={status}
+          value={currentStatus}
           onChange={(e) => handleStatusChange(e.target.value)}
           disabled={isUpdating}
           className="border rounded px-2 py-1 text-sm disabled:opacity-50"
         >
-          <option value="PLACED">PLACED</option>
           <option value="PREPARING">PREPARING</option>
           <option value="READY">READY</option>
           <option value="DELIVERED">DELIVERED</option>
-          <option value="CANCELLED">CANCELLED</option>
         </select>
-        {isUpdating && <span className="ml-2 text-xs text-gray-500 animate-pulse">...</span>}
+        {isUpdating && (
+          <span className="ml-2 text-xs text-gray-500 animate-pulse">...</span>
+        )}
       </td>
     </tr>
   );

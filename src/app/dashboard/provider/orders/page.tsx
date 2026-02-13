@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import OrderRow from "@/components/provider/OrderRow";
 import { ProviderServerService } from "@/services/provider.server";
 
@@ -28,9 +29,7 @@ export default async function ProviderOrdersPage() {
                 </td>
               </tr>
             ) : (
-              orders.map((order: any) => (
-                <OrderRow key={order.id} {...order} />
-              ))
+              orders.map((order: any) => <OrderRow key={order.id} {...order} />)
             )}
           </tbody>
         </table>

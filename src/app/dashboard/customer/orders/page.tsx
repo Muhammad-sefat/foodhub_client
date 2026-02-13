@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import OrderCard from "@/components/customer/OrderCard";
 import { CustomerServerService } from "@/services/customer.server";
 
@@ -11,7 +12,7 @@ export default async function MyOrdersPage() {
       {orders.length === 0 ? (
         <p className="text-gray-500">No orders found.</p>
       ) : (
-        orders.map((order: any) => <OrderCard key={order.id} {...order} />)
+        orders.map((order: any) => <OrderCard key={order.id} order={order} />)
       )}
     </div>
   );

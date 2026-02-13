@@ -1,6 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
-import { AdminService } from "@/services/admin.service";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -8,16 +7,31 @@ import { useState } from "react";
 export default function UserRow({ id, name, email, role, status }: any) {
   const router = useRouter();
   const [isUpdating, setIsUpdating] = useState(false);
+  const nextStatus = status === "ACTIVE" ? "SUSPENDED" : "ACTIVE";
+  const actionLabel = status === "ACTIVE" ? "Suspend User" : "Activate User";
 
   const handleToggle = async () => {
     setIsUpdating(true);
-    const newStatus = status === "ACTIVE" ? "SUSPENDED" : "ACTIVE";
+
     try {
-      await AdminService.updateUserStatus(id, newStatus);
-      toast.success(`User set to ${newStatus}`);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/admin/users/${id}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ status: nextStatus }),
+        },
+      );
+
+      if (!res.ok) {
+        throw new Error("Failed to update user status");
+      }
+
+      toast.success(`User set to ${nextStatus}`);
       router.refresh();
     } catch (error: any) {
-      toast.error(error.message || "Failed to update status");
+      toast.error(error.message);
     } finally {
       setIsUpdating(false);
     }
@@ -25,7 +39,7 @@ export default function UserRow({ id, name, email, role, status }: any) {
 
   return (
     <tr className="border-b">
-      <td className="py-2">{name}</td>
+      <td className="p-2">{name}</td>
       <td>{email}</td>
       <td>{role}</td>
       <td>
@@ -40,12 +54,14 @@ export default function UserRow({ id, name, email, role, status }: any) {
         </span>
       </td>
       <td>
-        <button 
-          onClick={handleToggle} 
+        <button
+          onClick={handleToggle}
           disabled={isUpdating}
-          className="text-xs text-green-600 hover:underline disabled:opacity-50"
+          className={`text-xs hover:underline disabled:opacity-50 ${
+            status === "ACTIVE" ? "text-red-600" : "text-green-600"
+          }`}
         >
-          {isUpdating ? "Updating..." : "Toggle Status"}
+          {isUpdating ? "Updating..." : actionLabel}
         </button>
       </td>
     </tr>

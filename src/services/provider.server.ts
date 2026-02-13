@@ -49,15 +49,10 @@ export const ProviderServerService = {
   // Get provider orders
   async getOrders() {
     try {
-      console.log("[ProviderServerService] Fetching orders");
       const response = await serverFetch(`${API_URL}/api/provider/orders`);
-      console.log("[ProviderServerService] Orders received:", response);
-
-      // Backend returns { success: true, data: [...] }
       const data = response.data || response;
       return Array.isArray(data) ? data : [];
     } catch (error: any) {
-      // Check if error message contains 403 or "No provider profile" to suppress noise
       if (
         error.message &&
         (error.message.includes("403") ||

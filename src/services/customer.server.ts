@@ -7,10 +7,7 @@ export const CustomerServerService = {
   // Get user's orders (Server Side)
   async getOrders() {
     try {
-      console.log("[CustomerServerService] Fetching orders");
       const response = await serverFetch(`${API_URL}/api/orders`);
-      console.log("[CustomerServerService] Orders received:", response);
-
       const data = response.data || response;
       return Array.isArray(data) ? data : [];
     } catch (error) {

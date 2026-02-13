@@ -13,7 +13,7 @@ export default function AdminOrderRow({
 }) {
   return (
     <tr className="border-b">
-      <td className="py-2">{id}</td>
+      <td className="p-2">{id}</td>
       <td>{customer}</td>
       <td>{provider}</td>
       <td>${total}</td>
