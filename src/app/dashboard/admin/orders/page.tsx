@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+export const dynamic = "force-dynamic";
 import AdminOrderRow from "@/components/admin/OrderRow";
 import { AdminService } from "@/services/admin.service";
 

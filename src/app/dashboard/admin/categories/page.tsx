@@ -2,6 +2,7 @@
 import AddCategoryModal from "@/components/admin/AddCategoryModal";
 import CategoryCard from "@/components/admin/CategoryCard";
 import { CategoryService } from "@/services/category.service";
+export const dynamic = "force-dynamic";
 
 export default async function AdminCategoriesPage() {
   const categories = await CategoryService.getAll();

@@ -4,6 +4,7 @@ import { HomeHero } from "@/components/common/home/HomeHero";
 import { HowItWorks } from "@/components/common/home/HowItWorks";
 import { CategoryService } from "@/services/category.service";
 import { userService } from "@/services/user.service";
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const { data } = await userService.getSession();

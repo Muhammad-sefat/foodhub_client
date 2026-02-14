@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+export const dynamic = "force-dynamic";
 import OrderRow from "@/components/provider/OrderRow";
 import { ProviderServerService } from "@/services/provider.server";
 
