@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import OrderCard from "@/components/customer/OrderCard";
 import { CustomerServerService } from "@/services/customer.server";
+export const dynamic = "force-dynamic";
 
 export default async function MyOrdersPage() {
   const orders = await CustomerServerService.getOrders();

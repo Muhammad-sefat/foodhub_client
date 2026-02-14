@@ -1,5 +1,6 @@
 import StatCard from "@/components/customer/StatCard";
 import { CustomerServerService } from "@/services/customer.server";
+export const dynamic = "force-dynamic";
 
 export default async function page() {
   const stats = await CustomerServerService.getDashboardStats();
@@ -10,8 +11,14 @@ export default async function page() {
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <StatCard title="Total Orders" value={stats.totalOrders.toString()} />
-        <StatCard title="Pending Orders" value={stats.pendingOrders.toString()} />
-        <StatCard title="Total Spent" value={`$${stats.totalSpent.toFixed(2)}`} />
+        <StatCard
+          title="Pending Orders"
+          value={stats.pendingOrders.toString()}
+        />
+        <StatCard
+          title="Total Spent"
+          value={`$${stats.totalSpent.toFixed(2)}`}
+        />
       </div>
     </div>
   );

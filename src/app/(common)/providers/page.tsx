@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import ProviderCard from "@/components/common/provider/ProviderCard";
 import { ProviderServerService } from "@/services/provider.server";
+export const dynamic = "force-dynamic";
 
 export default async function RestaurantsPage() {
   const providers = await ProviderServerService.getAllProviders();
