@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export function FeaturedMeals() {
   return (
     <section className="bg-gray-50 py-16">
@@ -5,12 +7,12 @@ export function FeaturedMeals() {
         <div className="mb-10 flex items-center justify-between">
           <h2 className="text-2xl font-semibold text-black">Popular Meals</h2>
 
-          <a
+          <Link
             href="/meals"
             className="text-sm font-medium text-green-600 hover:underline"
           >
             View all
-          </a>
+          </Link>
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const dynamic = "force-dynamic";
 import MealCard from "@/components/common/meals/MealCard";
 import { MealService } from "@/services/meal.service";
 

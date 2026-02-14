@@ -3,11 +3,6 @@ import { serverFetch } from "@/lib/serverFetch";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
-interface ProfileData {
-  restaurant: string;
-  address: string;
-}
-
 export const ProviderServerService = {
   // Get provider profile
   async getProfile() {

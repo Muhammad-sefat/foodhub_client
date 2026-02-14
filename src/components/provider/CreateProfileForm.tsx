@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
@@ -12,7 +13,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 const profileSchema = z.object({
-  restaurant: z.string().min(2, "Restaurant name must be at least 2 characters"),
+  restaurant: z
+    .string()
+    .min(2, "Restaurant name must be at least 2 characters"),
   address: z.string().min(5, "Address must be at least 5 characters"),
 });
 
@@ -55,7 +58,10 @@ export default function CreateProfileForm() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="space-y-2">
-          <label htmlFor="restaurant" className="text-sm font-medium text-gray-700">
+          <label
+            htmlFor="restaurant"
+            className="text-sm font-medium text-gray-700"
+          >
             Restaurant Name
           </label>
           <Input
@@ -71,7 +77,10 @@ export default function CreateProfileForm() {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="address" className="text-sm font-medium text-gray-700">
+          <label
+            htmlFor="address"
+            className="text-sm font-medium text-gray-700"
+          >
             Address
           </label>
           <Textarea

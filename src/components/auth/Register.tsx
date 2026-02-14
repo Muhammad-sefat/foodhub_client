@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { authClient } from "@/lib/auth.client";
 import { registerSchema, RegisterValues } from "@/lib/validations/auth";
 
 export default function RegisterPage() {
@@ -39,6 +38,7 @@ export default function RegisterPage() {
       toast.success("Account created. Please login.", { id: toastId });
       router.push("/login");
     } catch (err) {
+      console.log(err);
       toast.error("Something went wrong", { id: toastId });
     }
   };

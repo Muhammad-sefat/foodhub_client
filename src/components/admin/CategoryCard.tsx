@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { CategoryService } from "@/services/category.service";
@@ -5,12 +6,18 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function CategoryCard({ id, name }: { id: string, name: string }) {
+export default function CategoryCard({
+  id,
+  name,
+}: {
+  id: string;
+  name: string;
+}) {
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
-    if(!confirm(`Are you sure you want to delete ${name}?`)) return;
+    if (!confirm(`Are you sure you want to delete ${name}?`)) return;
 
     setIsDeleting(true);
     try {
@@ -27,9 +34,9 @@ export default function CategoryCard({ id, name }: { id: string, name: string })
   return (
     <div className="bg-white border rounded-lg p-4 flex justify-between items-center">
       <p className="font-medium">{name}</p>
-      <button 
+      <button
         onClick={handleDelete}
-        disabled={isDeleting} 
+        disabled={isDeleting}
         className="text-sm text-red-500 hover:underline disabled:opacity-50"
       >
         {isDeleting ? "Deleting..." : "Delete"}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { MealService } from "@/services/meal.service";
@@ -46,7 +47,9 @@ export default function MenuItemCard({
 
   return (
     <>
-      <div className={`bg-white border rounded-lg p-4 flex justify-between items-center ${isDeleting ? "opacity-50" : ""}`}>
+      <div
+        className={`bg-white border rounded-lg p-4 flex justify-between items-center ${isDeleting ? "opacity-50" : ""}`}
+      >
         <div>
           <p className="font-semibold">{title}</p>
           <p className="text-sm text-gray-500">
