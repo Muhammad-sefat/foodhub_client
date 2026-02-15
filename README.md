@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FoodHub 🍱
+**Frontend Application**
 
-## Getting Started
+---
 
-First, run the development server:
+## 🌐 Live Site
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+🔗 https://foodhub-client-one.vercel.app
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📖 Overview
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+FoodHub is a modern meal ordering platform where customers can browse meals, place orders, and track delivery status. Providers can manage their menus and orders, while admins oversee the entire system.
 
-## Learn More
+This repository contains the frontend application built with a responsive and user-friendly interface.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ✨ Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 🌍 Public
+- Browse meals and providers
+- View meal details
+- Filter and search functionality
+- User authentication
 
-## Deploy on Vercel
+### 👤 Customer
+- Add meals to cart
+- Checkout and place orders
+- Track order status
+- Leave reviews
+- Manage profile
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 🍳 Provider
+- Add, edit, delete meals
+- View incoming orders
+- Update order status
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 🛡️ Admin
+- Manage users
+- Manage categories
+- Monitor all orders
+
+---
+
+## 🚀 Status
+
+Fully functional role-based system with protected routes and responsive design.
+
+---
+
+## 👨‍💻 Developed By
+
+Muhammad Sefat
